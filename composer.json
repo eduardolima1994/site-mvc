@@ -1,3 +1,15 @@
 {
-    "description": "Projeto Celke"
+    "description": "Projeto Celke",
+    "authors": [
+        {
+            "name": "Eduardo Lima",
+            "email": "eduardolima.tecnico@gmail.com" 
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Core\\": "core"
+        }
+    },
+    "require": {}
 }
