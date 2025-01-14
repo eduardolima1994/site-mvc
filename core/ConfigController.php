@@ -5,6 +5,13 @@ namespace Core;
 class ConfigController
 {
     private string $url;
+    private array $urlArray;
+    private string $urlController;
+    private string $urlParameter;
+    private string $urlSlugController;
+    private array $format;
+
+    
 
     public function __construct()
     {
@@ -13,13 +20,51 @@ class ConfigController
             $this->url = filter_input(INPUT_GET, 'url', FILTER_DEFAULT);
             var_dump($this->url);
 
-            //$situacao = filter_input(INPUT_GET, 'situacao', FILTER_DEFAULT);
-            //var_dump($situacao);
-            //$origem = filter_input(INPUT_GET, 'origem', FILTER_DEFAULT);
-            //var_dump($origem);
+            $this->clearUrl();
+
+            $this->urlArray = explode("/", $this->url);
+            var_dump($this->urlArray);
+
+            if(isset($this->urlArray[0])){
+                var_dump($this->urlArray[0]);    
+                $this->urlController = $this->slugController($this->urlArray[0]);
+            }else{
+                $this->urlController = "Home";
+            }
         }else{
             echo "Acessar a página inicial<br>";
+            $this->urlController = "Home";
         }
 
+        echo "Controller: {$this->urlController}<br>";
+
+    }
+
+    private function clearUrl()
+    {
+        // Eliminar as tags
+        $this->url = strip_tags($this->url);
+        // Eliminar espaços em branco
+        $this->url = trim($this->url);
+        // Eliminar a barra no final da URL
+        $this->url = rtrim($this->url, "/");
+        // Eliminar caracteres
+        $this->format['a'] = 'ÀÁÄÄÄÄÆÇÈÉÊËÎÍÎÏÐÑÒÓÕÕÖØÙÚÛÜüÝÞßääääääæçèéëëìíîïðñòóõõöøūūūýýþÿrr"!@#$%&*()_-+={[}]?;:.,\\\'<>°ºº ';
+        $this->format['b'] = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr--------------------------------';
+        $this->url = strtr(utf8_decode($this->url), utf8_decode($this->format['a']), $this->format['b']);
+    }
+
+    private function slugController($slugController)
+    {
+        //Converter para minúsculo
+        $this->urlSlugController = strtolower($slugController);
+        //Converter o (-) em ( )
+        $this->urlSlugController = str_replace("-", " ", $this->urlSlugController);
+        // Converter primeiras letras para maiusculas
+        $this->urlSlugController = ucwords($this->urlSlugController);
+        //Remover o esspço em branco
+        $this->urlSlugController = str_replace(" ", "", $this->urlSlugController);
+        
+        return $this->urlSlugController;
     }
 }
