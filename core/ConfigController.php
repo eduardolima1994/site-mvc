@@ -2,17 +2,27 @@
 
 namespace Core;
 
+/**
+ * Recebe a URL e manipula
+ * Carregar a CONTROLLER
+ * 
+ * @author Eduardo <eduardolima.tecnico@gmail.com>
+ */
 class ConfigController extends Config
 {
+    /** @var string $url Recebe a URL do .htaccess */
     private string $url;
+    /** @var array $urlArray Recebe a URL convertida para array */
     private array $urlArray;
     private string $urlController;
-    // private string $urlParameter;
+    /** @var string $urlParameterv */ 
     private string $urlSlugController;
     private array $format;
 
-    
-
+    /**
+     * Recebe a URL do .htaccess
+     * Validar a URL
+     */
     public function __construct()
     {
         $this->config();
@@ -40,7 +50,13 @@ class ConfigController extends Config
 
     }
 
-    private function clearUrl()
+    /**
+     * Método privado não pode ser instanciado fora da classe
+     * Limpara a URL, elimando as TAG, os espaços em brancos, retirar a barra no final da URLre retirar os caracteres especiais.
+     *
+     * @return void
+     */
+    private function clearUrl(): void
     {
         // Eliminar as tags
         $this->url = strip_tags($this->url);
@@ -54,7 +70,14 @@ class ConfigController extends Config
         $this->url = strtr(utf8_decode($this->url), utf8_decode($this->format['a']), $this->format['b']);
     }
 
-    private function slugController($slugController)
+    /**
+     * Converter o valor obtido da URL "sobre-empresa" e converter no formato da classe "SobreEmpresa". 
+     * Utilizado as funções para converter tudo para minúsculo, converter o traço pelo espaço, converter cada letra da primeira palavra para maiúsculo, retirar os espaços em branco
+     *
+     * @param string $slugController Nome da classe
+     * @return string Retorna a controller "sobre-empresa" convertido para o nome da Classe "SobreEmpresa"
+     */
+    private function slugController($slugController): string
     {
         //Converter para minúsculo
         $this->urlSlugController = strtolower($slugController);
@@ -68,7 +91,13 @@ class ConfigController extends Config
         return $this->urlSlugController;
     }
 
-    public function loadPage()
+    /**
+     * Carregar as Controllers.
+     * Instanciar as classes da controller e carregar o método index.
+     *
+     * @return void
+     */
+    public function loadPage(): void
     {
 
         $classLoad = "\\Sts\\Controllers\\" . $this->urlController;
