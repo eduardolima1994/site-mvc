@@ -5,4 +5,6 @@ if(!defined('C7E3L8K9E5')){
   die("Erro: Página não encontrada!");
 }
 
-echo "View da página home do site<br>";
+echo "View da página home<br>";
+
+var_dump($this->data);

@@ -6,7 +6,7 @@ RewriteCond %{REQUEST_FILENAME} !-l
 
 RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
 
-Options -Index
+# Options -Index
 
 # comentário
 # index.php?url=contato/index&artigo=1&origem=facebook
